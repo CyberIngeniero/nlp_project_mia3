@@ -25,6 +25,15 @@ from datasets import load_dataset, concatenate_datasets, DatasetDict
 
 # Limpieza de tweet
 def preprocess_tweet(tweet):
+    """
+    Limpia un tweet eliminando menciones, hashtags, emojis y caracteres especiales.
+    
+    Args:
+        tweet (str): El texto del tweet a limpiar.
+    
+    Returns:
+        str: El tweet limpio.
+    """
     # Elimina los espacios en blanco al inicio y al final
     tweet = tweet.strip()
     # Elimina las menciones
@@ -44,6 +53,15 @@ def preprocess_tweet(tweet):
 
 # Ajuste del tokenizador
 def process(df):
+    """
+    Procesa los datos de un DataFrame utilizando un tokenizador.
+    
+    Args:
+        df (pandas.DataFrame): El DataFrame que contiene los datos a procesar.
+    
+    Returns:
+        dict: Un diccionario con los datos tokenizados.
+    """
     tokenized_inputs = tokenizer(
        df["Tweet"], padding="max_length", truncation=True
     )
@@ -52,6 +70,18 @@ def process(df):
 
 # Crea un DataLoader
 def create_data_loader(df, tokenizer, max_len, batch_size):
+    """
+    Crea un DataLoader a partir de un DataFrame para el entrenamiento de un modelo.
+    
+    Args:
+        df (pandas.DataFrame): El DataFrame que contiene los datos a cargar en el DataLoader.
+        tokenizer: El tokenizador utilizado para convertir los textos en secuencias de tokens.
+        max_len (int): La longitud máxima de las secuencias de tokens.
+        batch_size (int): El tamaño del lote (batch) de datos.
+    
+    Returns:
+        torch.utils.data.DataLoader: El DataLoader creado.
+    """
     ds = EmotionDataset(
         tweets=df.Tweet.to_numpy(),
         labels=df[emotions].to_numpy(),
@@ -68,6 +98,16 @@ def create_data_loader(df, tokenizer, max_len, batch_size):
 
 # Evalua el modelo
 def evaluate_model(model, data_loader):
+    """
+    Evalúa un modelo utilizando un DataLoader y devuelve la pérdida promedio.
+    
+    Args:
+        model: El modelo a evaluar.
+        data_loader (torch.utils.data.DataLoader): El DataLoader que contiene los datos de evaluación.
+    
+    Returns:
+        float: La pérdida promedio obtenida durante la evaluación.
+    """
     model = model.eval()
 
     final_loss = 0
@@ -94,6 +134,16 @@ def evaluate_model(model, data_loader):
 
 # obtener predicciones
 def get_predictions(model, data_loader):
+    """
+    Genera predicciones utilizando un modelo y un DataLoader.
+    
+    Args:
+        model: El modelo utilizado para realizar las predicciones.
+        data_loader (torch.utils.data.DataLoader): El DataLoader que contiene los datos de entrada.
+    
+    Returns:
+        tuple: Una tupla que contiene dos arrays numpy, uno con las predicciones y otro con los valores reales.
+    """
     model = model.eval()
     predictions = []
     real_values = []
