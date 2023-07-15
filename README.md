@@ -4,6 +4,7 @@ Project created for the Natural Language Processing (NLP) module of the Master i
 
 ---
 Apertura: sábado, 20 de mayo de 2023, 00:00
+
 Cierre: domingo, 16 de julio de 2023, 00:00
 
 ## Objetivos
